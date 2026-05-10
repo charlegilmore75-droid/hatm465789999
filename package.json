@@ -43,7 +43,9 @@
     "@vitejs/plugin-react": "^4.4.1",
 
     "typescript": "^5.9.0-dev.20250501",
-    "tsx": "^4.19.4"
+    "tsx": "^4.19.4",
+
+    "wouter": "^3.3.5"
   },
 
   "devDependencies": {
