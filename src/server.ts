@@ -14,19 +14,19 @@ import sectionsRouter from "./routes/sections.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT ?? 3000);
 
-// Middlewares
+// middleware
 app.use(pinoHttp());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 
-// Health check
+// health check
 app.get("/api/health", (_req: Request, res: Response) => {
-  res.json({ status: "ok" });
+  return res.json({ status: "ok" });
 });
 
-// API routes
+// routes (clean separated)
 app.use(authRouter);
 app.use(servicesRouter);
 app.use(ordersRouter);
@@ -35,16 +35,16 @@ app.use(adminRouter);
 app.use(providersRouter);
 app.use(sectionsRouter);
 
-// Frontend static build
+// frontend
 const clientDist = path.join(__dirname, "..", "client", "dist");
 
 app.use(express.static(clientDist));
 
 app.get("*", (_req: Request, res: Response) => {
-  res.sendFile(path.join(clientDist, "index.html"));
+  return res.sendFile(path.join(clientDist, "index.html"));
 });
 
-// Start server
+// start server
 app.listen(PORT, "0.0.0.0", () => {
   console.log(HATM server running on port ${PORT});
 });
