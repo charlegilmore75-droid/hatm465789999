@@ -13,7 +13,7 @@
     "dev:server": "tsx watch src/server.ts",
     "dev:client": "vite --config client/vite.config.ts",
 
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm install --include=dev && npm run build:client && npm run build:server",
 
     "build:client": "vite build --config client/vite.config.ts",
     "build:server": "tsc -p tsconfig.server.json",
