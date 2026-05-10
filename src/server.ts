@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import pinoHttp from "pino-http";
 
+// routers
 import authRouter from "./routes/auth.js";
 import servicesRouter from "./routes/services.js";
 import ordersRouter from "./routes/orders.js";
@@ -14,19 +15,19 @@ import sectionsRouter from "./routes/sections.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const PORT = Number(process.env.PORT ?? 3000);
+const PORT = Number(process.env.PORT || 3000);
 
-// middleware
+// middlewares
 app.use(pinoHttp());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 
 // health check
 app.get("/api/health", (_req: Request, res: Response) => {
-  return res.json({ status: "ok" });
+  res.json({ status: "ok" });
 });
 
-// routes (clean separated)
+// API routes
 app.use(authRouter);
 app.use(servicesRouter);
 app.use(ordersRouter);
@@ -35,16 +36,17 @@ app.use(adminRouter);
 app.use(providersRouter);
 app.use(sectionsRouter);
 
-// frontend
+// frontend build
 const clientDist = path.join(__dirname, "..", "client", "dist");
 
 app.use(express.static(clientDist));
 
+// SPA fallback
 app.get("*", (_req: Request, res: Response) => {
-  return res.sendFile(path.join(clientDist, "index.html"));
+  res.sendFile(path.join(clientDist, "index.html"));
 });
 
 // start server
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(HATM server running on port ${PORT});
+  console.log(`HATM server running on port ${PORT}`);
 });
